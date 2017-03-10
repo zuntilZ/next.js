@@ -120,6 +120,13 @@ export default class Server {
         await this.serveStatic(req, res, p)
       },
 
+      // This is to support, webpack dynamic imports in production.
+      '/_webpack/:number': async (req, res, params) => {
+        if (isNaN(params.number)) throw new Error('Webpack dynamic imports should be numbered')
+        const p = join(this.dir, '.next', params.number)
+        await this.serveStatic(req, res, p)
+      },
+
       '/static/:path+': async (req, res, params) => {
         const p = join(this.dir, 'static', ...(params.path || []))
         await this.serveStatic(req, res, p)

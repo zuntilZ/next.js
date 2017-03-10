@@ -103,11 +103,17 @@ export default class HotReloader {
         const rootDir = join('bundles', 'pages')
 
         for (const n of new Set([...added, ...removed, ...failed, ...succeeded])) {
+          // With dynamic imports name of chunk could be null.
+          // We need to handle it like below.
+          if (!n) continue
           const route = toRoute(relative(rootDir, n))
           this.send('reload', route)
         }
 
         for (const [n, hash] of chunkHashes) {
+          // With dynamic imports name of chunk could be null.
+          // We need to handle it like below.
+          if (!n) continue
           if (!this.prevChunkHashes.has(n)) continue
           if (this.prevChunkHashes.get(n) === hash) continue
 
