@@ -8,8 +8,8 @@ export default function withImport (promise, Loading = () => (<p>Loading...</p>)
     }
 
     componentDidMount () {
-      promise.then((Comp) => {
-        this.setState({ AsyncComponent: Comp.default || Comp })
+      promise.then((AsyncComponent) => {
+        this.setState({ AsyncComponent })
       })
     }
 

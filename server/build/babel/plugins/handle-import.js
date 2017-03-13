@@ -2,10 +2,11 @@
 // We've added support for SSR with this version
 import template from 'babel-template'
 import syntax from 'babel-plugin-syntax-dynamic-import'
+import UUID from 'uuid'
 
 const TYPE_IMPORT = 'Import'
 
-const buildImport = template(`
+const buildImport = (args) => (template(`
   (
     new Promise((resolve) => {
       if (process.pid) {
@@ -13,11 +14,14 @@ const buildImport = template(`
       }
 
       require.ensure([], (require) => {
-        resolve(require(SOURCE));
-      });
+        let m = require(SOURCE)
+        m = m.default || m
+        m.__webpackChunkName = '${args.name}'
+        resolve(m);
+      }, 'chunks/${args.name}.js');
     })
   )
-`)
+`))
 
 export default () => ({
   inherits: syntax,
@@ -26,6 +30,8 @@ export default () => ({
     CallExpression (path) {
       if (path.node.callee.type === TYPE_IMPORT) {
         const newImport = buildImport({
+          name: UUID.v4()
+        })({
           SOURCE: path.node.arguments
         })
         path.replaceWith(newImport)

@@ -261,7 +261,8 @@ export default async function createCompiler (dir, { dev = false, quiet = false,
 
         // append hash id for cache busting
         return `webpack:///${resourcePath}?${id}`
-      }
+      },
+      chunkFilename: '[name]'
     },
     resolve: {
       modules: [
