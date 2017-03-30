@@ -1,9 +1,10 @@
 import { connect } from 'react-redux'
 
-const LocalCounter = ({ count, dispatch }) => {
+const AsyncCounter = ({ count, dispatch }) => {
   return (
     <div>
-      <h2>Local Count: {count}</h2>
+      <h2>Async Count: {count}</h2>
+      <p>The reducer for this counter will when it is needed.</p>
       <button onClick={() => dispatch({ type: 'INCREMENT_LOCAL_COUNTER' })}>
         increment counter
       </button>
@@ -11,7 +12,7 @@ const LocalCounter = ({ count, dispatch }) => {
   )
 }
 
-export default connect(state => ({ count: state.localCounter }))(LocalCounter)
+export default connect(state => ({ count: state.asyncCounter }))(AsyncCounter)
 
 export const reducer = (state = 0, action) => {
   switch (action.type) {

@@ -4,6 +4,7 @@ const GlobalCounter = ({ count, dispatch }) => {
   return (
     <div>
       <h2>Global Count: {count}</h2>
+      <p>The reducer for this counter will be loaded on every page.</p>
       <button onClick={() => dispatch({ type: 'INCREMENT_GLOBAL_COUNTER' })}>
         increment counter
       </button>
